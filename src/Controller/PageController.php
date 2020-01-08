@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Enquiry;
 use App\Form\EnquiryFormType;
+use App\Service\EmailService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends AbstractController
 {
+    /** @var EmailService  */
+    private $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
@@ -40,14 +49,8 @@ class PageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // refactor this block to emailService
-            $email = (new TemplatedEmail())
-                ->from('enquiries@symblog.co.uk')
-                ->to($this->getParameter('app.admin_email'))
-                ->subject('Contact enquiry from symblog')
-                ->textTemplate('page/_contactEmail.txt.twig')
-                ->context(['enquiry' => $enquiry]);
+//todo: think about renaming EmailService::fillWithData()
+            $email = $this->emailService->fillWithData($enquiry);
 
             $mailer->send($email);
 
