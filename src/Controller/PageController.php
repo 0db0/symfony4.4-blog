@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Enquiry;
 use App\Form\EnquiryFormType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends AbstractController
@@ -29,7 +32,7 @@ class PageController extends AbstractController
     /**
      * @Route("/contact", name="contact_page", methods={"GET", "POST"})
      */
-    public function contact(Request $request)
+    public function contact(Request $request, MailerInterface $mailer, Session $session)
     {
         $enquiry = new Enquiry();
 
@@ -37,6 +40,19 @@ class PageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // refactor this block to emailService
+            $email = (new TemplatedEmail())
+                ->from('enquiries@symblog.co.uk')
+                ->to($this->getParameter('app.admin_email'))
+                ->subject('Contact enquiry from symblog')
+                ->textTemplate('page/_contactEmail.txt.twig')
+                ->context(['enquiry' => $enquiry]);
+
+            $mailer->send($email);
+
+            $session->getFlashBag()->add('blogger-notice', 'Your contact enquiry was successfully send!');
+
             return $this->redirectToRoute('contact_page');
         }
 

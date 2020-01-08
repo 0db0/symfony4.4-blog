@@ -82,7 +82,7 @@ class Enquiry
         return $this;
     }
 
-    public function getMessage(): ?text
+    public function getMessage(): ?string
     {
         return $this->message;
     }
