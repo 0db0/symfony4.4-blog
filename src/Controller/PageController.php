@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\Enquiry;
 use App\Form\EnquiryFormType;
+use App\Repository\BlogRepository;
 use App\Service\EmailService;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -25,9 +26,13 @@ class PageController extends AbstractController
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
-    public function index()
+    public function index(BlogRepository $blogRepository)
     {
-        return $this->render('page/index.html.twig');
+        $blogs = $blogRepository->findAllOrderedByNewest();
+
+        return $this->render('page/index.html.twig', [
+            'blogs' =>$blogs
+        ]);
     }
 
     /**

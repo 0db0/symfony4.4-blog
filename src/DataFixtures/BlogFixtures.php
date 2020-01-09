@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Blog;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class AppFixtures extends BaseFixtures
+class BlogFixtures extends BaseFixtures
 {
     protected function loadData(ObjectManager $manager)
     {

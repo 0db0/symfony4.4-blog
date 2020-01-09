@@ -34,7 +34,7 @@ abstract class BaseFixtures extends Fixture
             $factory($entity);
 
             $this->manager->persist($entity);
-            $this->addReference($className . ' ' .$i, $entity);
+            $this->addReference($className . '_' .$i, $entity);
         }
     }
 

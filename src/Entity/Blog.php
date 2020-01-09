@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,8 +45,6 @@ class Blog
      */
     private $tags;
 
-    private $comments = [];
-
     /**
      * @ORM\Column(type="datetime")
      */
@@ -54,6 +54,11 @@ class Blog
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blog")
+     */
+    private $comments;
 
     public function getId(): ?int
     {
@@ -83,10 +88,14 @@ class Blog
 
         return $this;
     }
-
-    public function getBlog(): ?string
+//todo: спросить, допускается ли вставлять логику в getter
+    public function getBlog($length = null): ?string
     {
-        return $this->blog;
+        if (false === is_null($length) && $length > 0) {
+            return mb_substr($this->blog, 0, $length);
+        } else {
+            return $this->blog;
+        }
     }
 
     public function setBlog(string $blog): self
@@ -148,6 +157,7 @@ class Blog
     {
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -156,5 +166,36 @@ class Blog
     public function setUpdatedAtValue()
     {
         $this->setUpdatedAt(new \DateTime());
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getBlog() === $this) {
+                $comment->setBlog(null);
+            }
+        }
+
+        return $this;
     }
 }

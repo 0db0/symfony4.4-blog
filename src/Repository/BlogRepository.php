@@ -19,6 +19,24 @@ class BlogRepository extends ServiceEntityRepository
         parent::__construct($registry, Blog::class);
     }
 
+    /**
+     * @return Blog[]
+     */
+    public function findAllOrderedByNewest()
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.createdAt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+//        $db = $this->createQueryBuilder('b')
+//                ->orderBy('b.createdAt', 'DESC');
+//dd($db->getDQL());
+////        $query = ;
+
+    }
+
     // /**
     //  * @return Enquiry[] Returns an array of Enquiry objects
     //  */
