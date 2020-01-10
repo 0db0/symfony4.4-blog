@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Entity\Comment;
-use App\Repository\BlogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,14 +17,14 @@ class BlogController extends AbstractController
         if (!$blog) {
             throw $this->createNotFoundException('Ooops! Unable to find blog post');
         }
-
+//        todo: think about creating CommentService
         $repo = $this->getDoctrine()->getManager()->getRepository(Comment::class);
 
-        $comment = $repo->findNewestCommentForBlog($blog->getId());
+        $comments = $repo->findNewestCommentForBlog($blog->getId());
 
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
-            'comment' => $comment
+            'comments' => $comments
         ]);
     }
 }
