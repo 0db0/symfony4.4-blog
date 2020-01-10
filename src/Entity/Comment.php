@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -19,11 +20,13 @@ class Comment
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please, introduce yourself")
      */
     private $user;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Comment can`t be empty. Type some sentences")
      */
     private $comment;
 

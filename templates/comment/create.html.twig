@@ -1,0 +1,8 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ comment.blog.id }}{% endblock %}
+
+{% block body %}
+    <h1>Add comment</h1>
+    {% include 'comment/form.html.twig' with {'form': form} %}
+{% endblock %}
