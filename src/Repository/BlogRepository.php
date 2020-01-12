@@ -25,16 +25,58 @@ class BlogRepository extends ServiceEntityRepository
     public function findAllOrderedByNewest()
     {
         return $this->createQueryBuilder('b')
+            ->select('b, c')
+            ->leftJoin('b.comments', 'c')
             ->orderBy('b.createdAt', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
-//        $db = $this->createQueryBuilder('b')
-//                ->orderBy('b.createdAt', 'DESC');
-//dd($db->getDQL());
-////        $query = ;
+    }
 
+    public function getTags()
+    {
+        $blogTags = $this->createQueryBuilder('b')
+            ->select('b.tags')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $tags = [];
+        foreach ($blogTags as $blogTag) {
+              $tags = array_merge(explode(', ', $blogTag['tags']), $tags );
+        }
+
+        foreach ($tags as &$tag) {
+            $tag = trim($tag);
+        }
+
+        return $tags;
+    }
+
+    public function getTagWeights($tags)
+    {
+        $tagWeights = [];
+
+        if (empty($tags)) {
+            return $tagWeights;
+        }
+        foreach ($tags as $tag) {
+            $tagWeights[$tag] = isset($tagWeights[$tag]) ? $tagWeights[$tag] +1 : 1;
+        }
+
+        uksort($tagWeights, function () {
+            return rand() > rand();
+        });
+
+        $max = max($tagWeights);
+        $multiplier = ($max > 5) ? 5 / $max : 1;
+
+        foreach ($tagWeights as &$tag) {
+            $tag = ceil($tag * $multiplier);
+        }
+
+        return $tagWeights;
     }
 
     // /**

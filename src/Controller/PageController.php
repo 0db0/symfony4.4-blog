@@ -68,4 +68,15 @@ class PageController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    public function sidebar(BlogRepository $blogRepository)
+    {
+        $tags = $blogRepository->getTags();
+
+        $tagweights = $blogRepository->getTagWeights($tags);
+
+        return $this->render('page/sidebar.html.twig', [
+            'tags' => $tagweights
+        ]);
+    }
 }

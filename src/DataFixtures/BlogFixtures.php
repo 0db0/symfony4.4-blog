@@ -7,6 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BlogFixtures extends BaseFixtures
 {
+    const TAGS = ['symfony4', 'php', 'doctrine', 'paradise', 'symblog', 'develop', 'mysql', 'javascript', 'nginx', 'apache', 'web', 'oop', 'html', 'css'];
+
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Blog::class, 5, function (Blog $blog) {
@@ -14,7 +16,7 @@ class BlogFixtures extends BaseFixtures
             $blog->setBlog($this->faker->text());
             $blog->setImage('beach.jpg');
             $blog->setAuthor($this->faker->name());
-            $blog->setTags('symfony4 php paradise symblog');
+            $blog->setTags(implode(', ', $this->faker->randomElements(self::TAGS, 4)));
         });
 
         $manager->flush();

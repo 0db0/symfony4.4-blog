@@ -3,8 +3,8 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ ('assets/css/blog.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ ('assets/css/sidebar.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
-{#todo: fix form assets (outlook)#}
 {% block sidebar %}
-    Sidebar content
+    {{ render(controller('App\\Controller\\PageController::sidebar')) }}
 {% endblock %}
