@@ -6,6 +6,7 @@ use App\Entity\Blog;
 use App\Entity\Enquiry;
 use App\Form\EnquiryFormType;
 use App\Repository\BlogRepository;
+use App\Repository\CommentRepository;
 use App\Service\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,14 +70,17 @@ class PageController extends AbstractController
         ]);
     }
 
-    public function sidebar(BlogRepository $blogRepository)
+    public function sidebar(BlogRepository $blogRepository, CommentRepository $commentRepository)
     {
         $tags = $blogRepository->getTags();
 
         $tagweights = $blogRepository->getTagWeights($tags);
 
+        $latestComments = $commentRepository->findLatestComments();
+
         return $this->render('page/sidebar.html.twig', [
-            'tags' => $tagweights
+            'tags' => $tagweights,
+            'latestComments' => $latestComments
         ]);
     }
 }

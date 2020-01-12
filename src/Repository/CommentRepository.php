@@ -30,6 +30,19 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findLatestComments()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+//            ->leftJoin('c.blog', 'b')
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
