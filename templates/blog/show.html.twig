@@ -7,7 +7,7 @@
         <header>
             <div class="date">
                 <time datetime="{{ blog.createdAt|date('c') }}">
-                    {{ blog.createdAt|date('l, F j, Y') }}
+                    {{ blog.createdAt|date('l, F j, Y') }} {#change date()-->created_ago#}
                 </time>
             </div>
             <h2>{{ blog.title }}</h2>

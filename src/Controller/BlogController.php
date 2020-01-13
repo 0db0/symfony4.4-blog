@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="show_page", methods={"GET"}, requirements={"id"="\d+"})
+     * @Route("/{id}/{slug}", name="show_page", methods={"GET"}, requirements={"id"="\d+"}, defaults={"comments": true})
      */
-    public function show(Blog $blog) //todo: use Blog $blog via ParamConverter instead of int $id. Done!
+    public function show(Blog $blog, $slug, $comments)
     {
         if (!$blog) {
             throw $this->createNotFoundException('Ooops! Unable to find blog post');

@@ -9,6 +9,8 @@ class BlogFixtures extends BaseFixtures
 {
     const TAGS = ['symfony4', 'php', 'doctrine', 'paradise', 'symblog', 'develop', 'mysql', 'javascript', 'nginx', 'apache', 'web', 'oop', 'html', 'css'];
 
+    static $
+
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Blog::class, 5, function (Blog $blog) {

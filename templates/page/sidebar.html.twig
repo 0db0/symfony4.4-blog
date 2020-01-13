@@ -6,7 +6,7 @@
         {% for tag, weight in tags %}
             <span class="weight-{{ weight }}">{{ tag }}</span>
         {% else %}
-    <p>There are no tags</p>
+            <span>There are no tags</span>
         {% endfor %}
     </p>
 </section>
@@ -19,14 +19,13 @@
         <article class="comment">
             <header>
                 <p class="small"><span class="highlight">{{ comment.user }}</span> commented on
-                    <a href="{{ path('show_page', { 'id': comment.blog.id }) }}#comment-{{ comment.id }}">
+                    <a href="{{ path('show_page', { 'id': comment.blog.id, 'slug': comment.blog.slug }) }}#comment-{{ comment.id }}">
                         {{ comment.blog.title }}
                     </a>
                     <em><time datetime="{{ comment.createdAt|date('c') }}">{{ comment.createdAt|created_ago }}</time></em>
                 </p>
             </header>
             <p>{{ comment.comment }}</p>
-            </p>
         </article>
     {% else %}
         <p>There are no recent comments</p>
