@@ -23,7 +23,7 @@ class Enquiry
     private $topic;
 
     /**
-     * @Assert\Length(min="50", max="300")
+     * @Assert\Length(min="50", max="300", allowEmptyString="false")
      */
     private $message;
 

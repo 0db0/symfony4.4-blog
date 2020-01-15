@@ -28,7 +28,7 @@ class BlogRepository extends ServiceEntityRepository
             ->select('b, c')
             ->leftJoin('b.comments', 'c')
             ->orderBy('b.createdAt', 'DESC')
-            ->setMaxResults(10)
+//            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
