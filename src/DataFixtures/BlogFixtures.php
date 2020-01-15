@@ -7,18 +7,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BlogFixtures extends BaseFixtures
 {
-    const TAGS = ['symfony4', 'php', 'doctrine', 'paradise', 'symblog', 'develop', 'mysql', 'javascript', 'nginx', 'apache', 'web', 'oop', 'html', 'css'];
+    static private $tags= ['symfony4', 'php', 'doctrine', 'paradise', 'symblog', 'develop', 'mysql', 'javascript', 'nginx', 'apache', 'web', 'oop', 'html', 'css'];
 
-    static $
+    static private $images = ['beach.jpg', 'misdirection.jpg', 'one_or_zero.jpg', 'pool_leak.jpg', 'the_grid.jpg'];
 
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Blog::class, 5, function (Blog $blog) {
             $blog->setTitle($this->faker->sentence());
             $blog->setBlog($this->faker->text());
-            $blog->setImage('beach.jpg');
+            $blog->setImage($this->faker->randomElement(self::$images));
             $blog->setAuthor($this->faker->name());
-            $blog->setTags(implode(', ', $this->faker->randomElements(self::TAGS, 4)));
+            $blog->setTags(implode(', ', $this->faker->randomElements(self::$tags, 4)));
         });
 
         $manager->flush();

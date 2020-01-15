@@ -43,7 +43,7 @@ class CommentController extends AbstractController
             return $this->redirectToRoute('show_page', [
                 'id' => $blog->getId(),
                 'slug' => $blog->getSlug()
-            ]).'#comment-' . $comment->getId();
+            ]);
         }
 
         return $this->render('comment/create.html.twig', [
